@@ -1,0 +1,57 @@
+@page "/catalogo"
+@foreach (Cafe cafe in lstCafes)
+{
+    <div class="flex flex-col items-center justify-center border-2 w-10vw h-10vh p-4 m-2">
+    <img src="@cafe.Imagen"/>
+    <h2 class="text-bold">@cafe.NombreCafe</h2>
+    <p>@cafe.DescripcionCafe</p>
+    <p class="text-bold text-white bg-green-600 rounded-xl p-3">@cafe.PrecioCafe Bs</p>
+</div>
+
+}
+
+@* Imagen,NombreCafe,DescripcionCade,PrecioCafe *@
+
+@code{
+
+    private List<Cafe> lstCafes=new List<Cafe>()
+    {
+        new Cafe()
+        {
+            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYPzW-mf0H9oDRZm_FX7NWNWvzVnurkIqi1wzhKhhckg&s=10",
+            NombreCafe="Capuchino",
+            DescripcionCafe="cafe con sadasdadasd",
+            PrecioCafe=20
+        },
+        new Cafe()
+        {
+            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLzu1lYQpkM8OVWKJp0OeGF5rfipdi27QORhdvXHMHOQ&s=10",
+            NombreCafe="Espresso",
+            DescripcionCafe="cafe con sadasdadasd",
+            PrecioCafe=35
+        },
+        new Cafe()
+        {
+            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1z2k4V0zchOjw_huxgu4FyZU7j1AQ0u1eEX8nO9GjTw&s=10",
+            NombreCafe="Negro",
+            DescripcionCafe="cafe con sadasdadasd",
+            PrecioCafe=25
+        },
+        new Cafe()
+        {
+            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwI_mhemBIAwaJSarfbpwOzm-mYZp3bsn85Y-XJnC2Lg&s=10",
+            NombreCafe="Tinto",
+            DescripcionCafe="cafe con sadasdadasd",
+            PrecioCafe=20
+        }
+    };
+
+
+    class Cafe
+    {
+        public string Imagen {get;set;}
+        public string NombreCafe {get;set;}
+        public string DescripcionCafe {get;set;}
+        public decimal PrecioCafe {get;set;}
+    }
+}
