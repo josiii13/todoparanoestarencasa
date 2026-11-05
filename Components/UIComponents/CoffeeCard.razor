@@ -1,0 +1,18 @@
+<div class="grid grid-cols-4 gap-4 p-4">
+        <div class="flex flex-col justify-center border-2 w-10vw rounded-md p-4 m-2 gap-2">
+            <img src="@Imagen" class="w-full h-1/2 object-cover rounded-md" />
+            <h2 class="text-bold text-2xl">@NombreCafe</h2>
+            <p><b>Descripción: </b>@DescripcionCafe</p>
+            <p class="font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 transition-colors rounded-xl p-3 text-center cursor-pointer">@PrecioCafe Bs.</p>
+        </div>
+</div>
+@code{
+    [Parameter]
+    public string? Imagen { get; set; }
+    [Parameter]
+    public string? NombreCafe { get; set; }
+    [Parameter]
+    public string? DescripcionCafe { get; set; }
+    [Parameter]
+    public decimal PrecioCafe { get; set; }
+}

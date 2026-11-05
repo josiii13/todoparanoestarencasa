@@ -1,57 +1,156 @@
 @page "/catalogo"
-@foreach (Cafe cafe in lstCafes)
-{
-    <div class="flex flex-col items-center justify-center border-2 w-10vw h-10vh p-4 m-2">
-    <img src="@cafe.Imagen"/>
-    <h2 class="text-bold">@cafe.NombreCafe</h2>
-    <p>@cafe.DescripcionCafe</p>
-    <p class="text-bold text-white bg-green-600 rounded-xl p-3">@cafe.PrecioCafe Bs</p>
+@using sharpness_sharp.Components.UIComponents
+
+<div class="grid grid-cols-4 gap-4 p-4">
+    @foreach (Cafe cafe in lstCafes)
+    {
+        <CoffeeCard Imagen></CoffeeCard>
+    }
 </div>
 
-}
 
-@* Imagen,NombreCafe,DescripcionCade,PrecioCafe *@
+@code {
 
-@code{
+    private List<Cafe> lstCafes = new()
+{
+    new Cafe(
+        "https://cuplacoffee.com/wp-content/uploads/2025/03/what-is-an-americano-featured.jpg",
+        "Americano",
+        "Espresso diluido con agua caliente.",
+        20m),
 
-    private List<Cafe> lstCafes=new List<Cafe>()
+    new Cafe(
+        "https://www.allrecipes.com/thmb/n6Q4vMcFsTadyvJZxD54Vt-BLpA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/96629-cafe-latte-ddmfs-hero-4x3-0288359d9c37485fa69afe5369dbcf2e.jpg",
+        "Latte",
+        "Espresso con leche vaporizada y una fina capa de espuma.",
+        25m),
+
+    new Cafe(
+        "https://perfectdailygrind.com/wp-content/uploads/2019/11/cappuccino-2.png",
+        "Cappuccino",
+        "Espresso con leche vaporizada y abundante espuma.",
+        25m),
+
+    new Cafe(
+        "https://cuplacoffee.com/wp-content/uploads/2025/03/what-is-an-americano-featured.jpg",
+        "Espresso",
+        "Café corto y concentrado, con aroma intenso.",
+        15m),
+
+    new Cafe(
+        "https://cuplacoffee.com/wp-content/uploads/2025/03/what-is-an-americano-featured.jpg",
+        "Doppio",
+        "Doble dosis de espresso para un sabor intenso.",
+        22m),
+
+    new Cafe(
+        "https://cuplacoffee.com/wp-content/uploads/2025/03/what-is-an-americano-featured.jpg",
+        "Ristretto",
+        "Espresso preparado con menos agua.",
+        18m),
+
+    new Cafe(
+        "https://cuplacoffee.com/wp-content/uploads/2025/03/what-is-an-americano-featured.jpg",
+        "Lungo",
+        "Espresso con una extracción más larga.",
+        18m),
+
+    new Cafe(
+        "https://perfectdailygrind.com/wp-content/uploads/2019/11/cappuccino-2.png",
+        "Espresso Macchiato",
+        "Espresso con un pequeño toque de espuma de leche.",
+        20m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/n6Q4vMcFsTadyvJZxD54Vt-BLpA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/96629-cafe-latte-ddmfs-hero-4x3-0288359d9c37485fa69afe5369dbcf2e.jpg",
+        "Cortado",
+        "Espresso con una pequeña cantidad de leche caliente.",
+        20m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/n6Q4vMcFsTadyvJZxD54Vt-BLpA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/96629-cafe-latte-ddmfs-hero-4x3-0288359d9c37485fa69afe5369dbcf2e.jpg",
+        "Flat White",
+        "Espresso doble con leche vaporizada de textura sedosa.",
+        27m),
+
+    new Cafe(
+        "https://perfectdailygrind.com/wp-content/uploads/2019/11/cappuccino-2.png",
+        "Mocaccino",
+        "Espresso con chocolate y leche vaporizada.",
+        28m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/z8r-_tGAUmOJYyWZPRerIWvrSlE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/707064-Brown-Sugar-Caramel-Latte-139119-House-of-Aqua-ffcbf68c2b2e4d7483ada4a8c4f4cd36.jpg",
+        "Café Bombón",
+        "Espresso servido sobre leche condensada.",
+        24m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/qu7rkFAwsjtPnkYNd5Uwb-MR78w=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/6954373-2000-2b32bcc34db1457ea9dd54b7cfff9359.jpg",
+        "Affogato",
+        "Helado de vainilla bañado con espresso caliente.",
+        30m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/cV3UYYkDNFlotFatGJWqrJZ_bP0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/3809505_20Cold-Brewed20Coffee20Photo20by20Buckwheat20Queen20650x465-3b868d11a8fd45aaac98cde0b75fd51e.jpg",
+        "Cold Brew",
+        "Café extraído lentamente en agua fría.",
+        26m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/_G0QokAQq_nQtYvWaM2rbZcAtSI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/21667-easy-iced-coffee-ddmfs-4x3-0093-7becf3932bd64ed7b594d46c02d0889f.jpg",
+        "Iced Latte",
+        "Espresso con leche fría y cubos de hielo.",
+        27m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/W2NqWevpFxI5F6iWNcXkppYQ_8g=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/2264737-Campfire-SMores-Frappuccino-237880-Anna-Berman-650x465-0e3b091f73f44167a065a0415049c644.jpg",
+        "Frappé de Café",
+        "Café licuado con leche y hielo.",
+        30m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/n6Q4vMcFsTadyvJZxD54Vt-BLpA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/96629-cafe-latte-ddmfs-hero-4x3-0288359d9c37485fa69afe5369dbcf2e.jpg",
+        "Latte de Vainilla",
+        "Espresso con leche vaporizada y vainilla.",
+        28m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/z8r-_tGAUmOJYyWZPRerIWvrSlE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/707064-Brown-Sugar-Caramel-Latte-139119-House-of-Aqua-ffcbf68c2b2e4d7483ada4a8c4f4cd36.jpg",
+        "Latte de Caramelo",
+        "Espresso con leche y jarabe de caramelo.",
+        28m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/yI7f31EXCWeXiDum7LvlaSGYOok=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/2107268-bdfd41684a57490382aad4ecdc8dcd58.jpg",
+        "Moca Blanco",
+        "Espresso con chocolate blanco y leche vaporizada.",
+        30m),
+
+    new Cafe(
+        "https://www.allrecipes.com/thmb/cV3UYYkDNFlotFatGJWqrJZ_bP0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/3809505_20Cold-Brewed20Coffee20Photo20by20Buckwheat20Queen20650x465-3b868d11a8fd45aaac98cde0b75fd51e.jpg",
+        "Espresso Tonic",
+        "Espresso servido con agua tónica y hielo.",
+        28m)
+};
+
+    public class Cafe
     {
-        new Cafe()
+        public string? Imagen { get; set; }
+        public string? NombreCafe { get; set; }
+        public string? DescripcionCafe { get; set; }
+        public decimal PrecioCafe { get; set; }
+
+        public Cafe(
+            string imagen,
+            string nombreCafe,
+            string descripcionCafe,
+            decimal precioCafe)
         {
-            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYPzW-mf0H9oDRZm_FX7NWNWvzVnurkIqi1wzhKhhckg&s=10",
-            NombreCafe="Capuchino",
-            DescripcionCafe="cafe con sadasdadasd",
-            PrecioCafe=20
-        },
-        new Cafe()
-        {
-            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLzu1lYQpkM8OVWKJp0OeGF5rfipdi27QORhdvXHMHOQ&s=10",
-            NombreCafe="Espresso",
-            DescripcionCafe="cafe con sadasdadasd",
-            PrecioCafe=35
-        },
-        new Cafe()
-        {
-            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1z2k4V0zchOjw_huxgu4FyZU7j1AQ0u1eEX8nO9GjTw&s=10",
-            NombreCafe="Negro",
-            DescripcionCafe="cafe con sadasdadasd",
-            PrecioCafe=25
-        },
-        new Cafe()
-        {
-            Imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwI_mhemBIAwaJSarfbpwOzm-mYZp3bsn85Y-XJnC2Lg&s=10",
-            NombreCafe="Tinto",
-            DescripcionCafe="cafe con sadasdadasd",
-            PrecioCafe=20
+            Imagen = imagen;
+            NombreCafe = nombreCafe;
+            DescripcionCafe = descripcionCafe;
+            PrecioCafe = precioCafe;
         }
-    };
-
-
-    class Cafe
-    {
-        public string Imagen {get;set;}
-        public string NombreCafe {get;set;}
-        public string DescripcionCafe {get;set;}
-        public decimal PrecioCafe {get;set;}
     }
 }

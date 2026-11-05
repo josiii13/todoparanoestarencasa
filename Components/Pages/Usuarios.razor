@@ -1,0 +1,52 @@
+@page "/usuarios"
+
+@foreach(Usuario user in lstUsuarios)
+{
+    <div>
+        <h2>Username: @user.Nombre @user.Apellidos</h2>
+        <p>Email: @user.Email</p>
+        <p>Password: @user.Password</p>
+        <p>Fecha Nacimiento: @user.Fecha_Nac</p>
+        <p>Color de Piel: @user.Color_Piel</p>
+        <p>Estatura: @user.Estatura m</p>
+    </div>
+}
+
+@code {
+    private List<Usuario> lstUsuarios = new()
+    {
+        new Usuario("Ana", "Caballero", "ana.c@email.com", "123456", "15/05/1998", "Claro", 1.65),
+        new Usuario("Denis", "Suarez", "denis.s@email.com", "123456", "22/08/1995", "Medio", 1.78),
+        new Usuario("Lucía", "Fernández", "lucia.f@email.com", "123456", "10/12/2000", "Oscuro", 1.60),
+        new Usuario("Mateo", "Reyes", "mateo.r@email.com", "123456", "03/03/1992", "Claro", 1.82)
+    };
+    public class Usuario
+    {
+
+        public string? Nombre { get; set; }
+        public string? Apellidos{ get; set; }
+        public string? Email { get; set; }
+        public string? Password{ get; set; }
+        public string? Fecha_Nac{ get; set; }
+        public string? Color_Piel{ get; set; }
+        public double? Estatura{ get; set; }
+
+        public Usuario(
+            string nombre,
+            string apellido,
+            string email,
+            string password,
+            string fecha_nac,
+            string color_piel,
+            double estatura)
+        {
+            Nombre = nombre;
+            Apellidos= apellido;
+            Email = email;
+            Password = password;
+            Fecha_Nac = fecha_nac;
+            Color_Piel = color_piel;
+            Estatura = estatura;
+        }
+    }
+}
