@@ -1,16 +1,40 @@
 @page "/catalogo"
+@using System.Net.Cache
 @using sharpness_sharp.Components.UIComponents
 
+<button @onclick="MostrarMensaje">Pulsame</button>
+<button @onclick="CrearUnCafe">CrearCafe</button>
 <div class="grid grid-cols-4 gap-4 p-4">
-    @foreach (Cafe cafe in lstCafes)
+
+    @foreach(var cafes in lstCafes)
     {
-        <CoffeeCard Imagen></CoffeeCard>
+        <CoffeeCard Imagen="@cafes.Imagen" 
+        DescripcionCafe="@cafes.DescripcionCafe" 
+        NombreCafe="@cafes.NombreCafe" 
+        PrecioCafe="@cafes.PrecioCafe"></CoffeeCard>
+    }
+    
+    @foreach(var mensaje in lstMensajes)
+    {
+        //<p class="ui-btn ui-btn-primary">@mensaje</p>
+        <img src="https://i.pinimg.com/236x/77/7d/95/777d956b585f7b165379490a1ecf2e4b.jpg" class="w-64 rounded-xl shadow-md" />
     }
 </div>
 
 
 @code {
+    List<string> lstMensajes=new();
 
+    private void MostrarMensaje()
+    {
+        lstMensajes.Add("No te aproveches de mi😭");
+    }
+    private void CrearUnCafe()
+    {
+        lstCafes.Add( new Cafe("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvVnPH3vYiCy-ppHhTHmKi_l0g09cHv9DYFQd7zWVaCA&s=10,nombreCafe=",
+        "cafe agregado","Cafe agregado con boton xd",20
+        ));
+    }
     private List<Cafe> lstCafes = new()
 {
     new Cafe(

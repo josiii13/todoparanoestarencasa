@@ -1,16 +1,19 @@
 @page "/usuarios"
-
-@foreach(Usuario user in lstUsuarios)
-{
-    <div>
-        <h2>Username: @user.Nombre @user.Apellidos</h2>
-        <p>Email: @user.Email</p>
-        <p>Password: @user.Password</p>
-        <p>Fecha Nacimiento: @user.Fecha_Nac</p>
-        <p>Color de Piel: @user.Color_Piel</p>
-        <p>Estatura: @user.Estatura m</p>
-    </div>
-}
+@using sharpness_sharp.Components.UIComponents
+<div class="flex flex-col gap-2">
+    @foreach(Usuario user in lstUsuarios)
+    {
+        <div class="border ">
+            <h2>Username: @user.Nombre @user.Apellidos</h2>
+            <p>Email: @user.Email</p>
+            <p>Password: @user.Password</p>
+            <p>Fecha Nacimiento: @user.Fecha_Nac</p>
+            <p>Color de Piel: @user.Color_Piel</p>
+            <p>Estatura: @user.Estatura m</p>
+            <CoffeeCard DescripcionCafe="asdasdasdasd"></CoffeeCard>
+        </div>
+    }
+</div>
 
 @code {
     private List<Usuario> lstUsuarios = new()
