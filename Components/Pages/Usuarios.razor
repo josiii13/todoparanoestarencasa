@@ -1,28 +1,37 @@
 @page "/usuarios"
 @using sharpness_sharp.Components.UIComponents
+@using sharpness_sharp.Data
+@inject ApplicationAuthDbContext _dbService
+
+
 <div class="flex flex-col gap-2">
-    @foreach(Usuario user in lstUsuarios)
+    @foreach(ApplicationUser user in lstUsuarios)
     {
         <div class="border ">
-            <h2>Username: @user.Nombre @user.Apellidos</h2>
+            <h2>Username: @user.UserName</h2>
             <p>Email: @user.Email</p>
-            <p>Password: @user.Password</p>
-            <p>Fecha Nacimiento: @user.Fecha_Nac</p>
-            <p>Color de Piel: @user.Color_Piel</p>
-            <p>Estatura: @user.Estatura m</p>
             <CoffeeCard DescripcionCafe="asdasdasdasd"></CoffeeCard>
         </div>
     }
 </div>
 
 @code {
-    private List<Usuario> lstUsuarios = new()
+    private ApplicationUser newUser=new ApplicationUser();
+
+    protected override Task OnInitializedAsync()
+    { 
+        lstUsuarios=_dbService.Users.ToList();
+        return base.OnInitializedAsync();
+    }
+    private Task AgregarUsuarios()
     {
-        new Usuario("Ana", "Caballero", "ana.c@email.com", "123456", "15/05/1998", "Claro", 1.65),
-        new Usuario("Denis", "Suarez", "denis.s@email.com", "123456", "22/08/1995", "Medio", 1.78),
-        new Usuario("Lucía", "Fernández", "lucia.f@email.com", "123456", "10/12/2000", "Oscuro", 1.60),
-        new Usuario("Mateo", "Reyes", "mateo.r@email.com", "123456", "03/03/1992", "Claro", 1.82)
-    };
+        _dbService.Users.Add(newUser);
+        _dbService.SaveChanges();
+        newUser = new ApplicationUser();
+         return Task.CompletedTask;
+    }
+    private List<ApplicationUser> lstUsuarios = new()
+    {};
     public class Usuario
     {
 
