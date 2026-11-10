@@ -1,14 +1,63 @@
-<div class="flex flex-col justify-center border-2 rounded-md p-4 m-2 gap-2">
+@using sharpness_sharp.Data.Models
+<div class="flex flex-col justify-center border-2 w-10vw rounded-md p-4 m-2 gap-2">
+    <input type="text" class="border-2" @bind="Imagen" disabled="@(!ModoEdicion)"/>
+
     <img src="@Imagen" class="w-full h-1/2 object-cover rounded-md" />
-    <h2 class="font-bold text-2xl">@NombreCafe</h2>
-    <p><b>Descripción:</b> @DescripcionCafe</p>
-    <p class="font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 transition-colors rounded-xl p-3 text-center cursor-pointer">
-        @PrecioCafe Bs.
-    </p>
+
+    <input class="text-bold text-2xl border-2" type="text" @bind="NombreCafe" 
+    disabled="@(!ModoEdicion)"/>
+
+    <input class="text-bold text-2xl border-2" type="text" @bind="DescripcionCafe"
+    disabled="@(!ModoEdicion)"/>
+
+    <input class="font-bold text-white bg-green-600 rounded-xl p-3 border-2" type="number" 
+    @bind="PrecioCafe" disabled="@(!ModoEdicion)"/>
+ 
+    @if (ModoEdicion)
+    {
+        <button class="font-bold  ui-btn bg-green-300 rounded-xl p-3 border-2" @onclick="() => {
+            CambiarModoEdicion();
+            ActualizarProducto();
+            }">Guardar</button>
+    }
+    else
+    {
+        <button class="font-bold  ui-btn bg-yellow-600 rounded-xl p-3 border-2" @onclick="CambiarModoEdicion">Editar</button>        
+    }
+    <button @onclick="BorrarProducto" class="ui-btn">Borrar</button>
 </div>
-@code{
-    [Parameter] public string? Imagen { get; set; }
-    [Parameter] public string? NombreCafe { get; set; }
-    [Parameter] public string? DescripcionCafe { get; set; }
+ 
+@code {
+    private bool ModoEdicion = false;
+
+    [Parameter] public int Id {get;set;}
+    [Parameter] public string Imagen { get; set; }
+    [Parameter] public string NombreCafe { get; set; }
+    [Parameter] public string DescripcionCafe { get; set; }
     [Parameter] public decimal PrecioCafe { get; set; }
+
+    [Parameter] public EventCallback<Cafe> EnviarNotificacionActualizacion {get;set;}
+    [Parameter] public EventCallback<int> EliminarCafe {get;set;}
+    private void CambiarModoEdicion()
+    {
+        ModoEdicion = !ModoEdicion;
+        StateHasChanged();
+    }
+    private Task ActualizarProducto()
+    {
+        EnviarNotificacionActualizacion.InvokeAsync(new()
+        {
+            Id=Id,
+            Imagen = Imagen,
+            NombreCafe = NombreCafe,
+            DescripcionCafe = DescripcionCafe,
+            PrecioCafe = PrecioCafe,
+        });
+        return Task.CompletedTask;
+    }
+    private Task BorrarProducto()
+    {
+        EliminarCafe.InvokeAsync(Id);
+        return Task.CompletedTask;
+    }
 }

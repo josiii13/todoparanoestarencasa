@@ -10,6 +10,7 @@
     <InputText @bind-Value="newCafe.NombreCafe" class="border-2 px-2" placeholder="Introduce el nombre del cafe"></InputText>
     <InputText @bind-Value="newCafe.DescripcionCafe" class="border-2 px-2" placeholder="Introduce la descripcion del cafe"></InputText>
     <InputNumber @bind-Value="newCafe.PrecioCafe" class="border-2 px-2" placeholder="Introduce el precio del cafe"></InputNumber>
+    
     <button type="submit">Guardar</button>
 </EditForm>
 
@@ -24,10 +25,11 @@
     }
     @foreach(var cafes in lstCafes)
     {
-        <CoffeeCard Imagen="@cafes.Imagen" 
+        <CoffeeCard Id="@cafes.Id" Imagen="@cafes.Imagen" 
         DescripcionCafe="@cafes.DescripcionCafe" 
         NombreCafe="@cafes.NombreCafe" 
-        PrecioCafe="@cafes.PrecioCafe"></CoffeeCard>
+        PrecioCafe="@cafes.PrecioCafe"
+        EnviarNotificacionActualizacion="ActualizarProducto" EliminarCafe="EliminarProducto"></CoffeeCard>
     }
     
 
@@ -60,6 +62,34 @@
         _dbService.Cafes.Add(newCafe);
         _dbService.SaveChanges();
         newCafe = new Cafe();
-         return Task.CompletedTask;
+        return Task.CompletedTask;
     }
+    private Task ActualizarProducto(Cafe cafeEditado)
+    {
+        Cafe cafeParaEditar=_dbService.Cafes.FirstOrDefault(cafe=> cafe.Id==cafeEditado.Id);
+        Console.WriteLine(cafeEditado.Id);
+        //Console.WriteLine(cafeEditado.Imagen);
+        Console.WriteLine(cafeEditado.NombreCafe);
+        Console.WriteLine(cafeEditado.DescripcionCafe);
+        Console.WriteLine(cafeEditado.PrecioCafe);
+        cafeParaEditar.NombreCafe=cafeEditado.NombreCafe;
+        cafeParaEditar.PrecioCafe=cafeEditado.PrecioCafe;
+        cafeParaEditar.DescripcionCafe=cafeEditado.DescripcionCafe;
+
+        _dbService.SaveChanges();
+
+        return Task.CompletedTask;
+    }
+    private void EliminarProducto(int id)
+    {
+        Cafe? cafe = lstCafes.FirstOrDefault(c=>c.Id==id);
+        if(cafe is null)
+        {
+            return;
+        }
+        _dbService.Cafes.Remove(cafe);
+        _dbService.SaveChanges();
+        lstCafes.Remove(cafe);
+    }
+
 }
