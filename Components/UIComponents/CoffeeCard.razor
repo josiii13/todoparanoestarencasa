@@ -1,59 +1,72 @@
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@using sharpness_sharp.Data
 @using sharpness_sharp.Data.Models
-
-
+@inject ApplicationAuthDbContext _dbService
+@inject AuthenticationStateProvider _auth
+ 
 <div class="flex flex-col justify-center border-2 w-10vw rounded-md p-4 m-2 gap-2">
     <input type="text" class="border-2" @bind="Imagen" disabled="@(!ModoEdicion)"/>
-
     <img src="@Imagen" class="w-full h-1/2 object-cover rounded-md" />
-
-    <input class="text-bold text-2xl border-2" type="text" @bind="NombreCafe" 
-    disabled="@(!ModoEdicion)"/>
-
-    <input class="text-bold text-2xl border-2" type="text" @bind="DescripcionCafe"
-    disabled="@(!ModoEdicion)"/>
-
-    <input class="font-bold text-white bg-green-600 rounded-xl p-3 border-2" type="number" 
-    @bind="PrecioCafe" disabled="@(!ModoEdicion)"/>
-   
+    <input class="text-bold text-2xl border-2" type="text" @bind="NombreCafe" disabled="@(!ModoEdicion)"/>
+    <input class="text-bold text-2xl border-2" type="text" @bind="DescripcionCafe"disabled="@(!ModoEdicion)"/>
+    <input class="font-bold text-white bg-green-600 rounded-xl p-3 border-2" type="number" @bind="PrecioCafe" disabled="@(!ModoEdicion)"/>
+ 
     @if (ModoEdicion)
     {
-         <AuthorizeView Roles="Admin">
-        <Authorized >
+    <AuthorizeView>
+        <Authorized>
         <button class="font-bold  ui-btn bg-green-300 rounded-xl p-3 border-2" @onclick="() => {
             CambiarModoEdicion();
             ActualizarProducto();
             }">Guardar</button>
-
         </Authorized>
-        </AuthorizeView>
+    </AuthorizeView>
     }
     else
-    {<AuthorizeView Roles="Admin">
-        <Authorized >        
-            <button class="font-bold  ui-btn bg-yellow-600 rounded-xl p-3 border-2" @onclick="CambiarModoEdicion">Editar</button>        
-    </Authorized>
-        </AuthorizeView>
+    {
+            <AuthorizeView Roles="Admin">
+        <Authorized >
+        <button class="font-bold  ui-btn bg-yellow-600 rounded-xl p-3 border-2" @onclick="CambiarModoEdicion">Editar</button>        
+                </Authorized>
+    </AuthorizeView>
     }
+ 
     <AuthorizeView Roles="Admin">
-        <Authorized > 
-    <button @onclick="BorrarProducto" class="ui-btn">Borrar</button>
-    </Authorized>
-    <NotAuthorized>No tienes permiso :(</NotAuthorized>
-        </AuthorizeView>
-    
+        <Authorized>
+            <button @onclick="BorrarProducto" class="ui-btn ui-btn-danger">Eliminar</button>
+        </Authorized>
+    </AuthorizeView>
+ 
+    <AuthorizeView Roles="Cliente">
+        <Authorized>
+            <div class="flex border-2 p-2 justify-between">
+                <input type="number" placeholder="cantidad" @bind="cantidadCafes"/>
+                <button  class="ui-btn bg-green-600" @onclick="RegistrarCompra">Comprar</button>
+            </div>
+        </Authorized>
+    </AuthorizeView>
 </div>
  
 @code {
+    private Task BorrarProducto()
+    {
+        EnviarNotificacionEliminacion.InvokeAsync(Id);
+        return Task.CompletedTask;
+    }
+ 
     private bool ModoEdicion = false;
-
+ 
     [Parameter] public int Id {get;set;}
     [Parameter] public string Imagen { get; set; }
     [Parameter] public string NombreCafe { get; set; }
     [Parameter] public string DescripcionCafe { get; set; }
     [Parameter] public decimal PrecioCafe { get; set; }
-
+ 
     [Parameter] public EventCallback<Cafe> EnviarNotificacionActualizacion {get;set;}
-    [Parameter] public EventCallback<int> EliminarCafe {get;set;}
+    [Parameter] public EventCallback<int> EnviarNotificacionEliminacion {get;set;}
+ 
+    private int cantidadCafes {get;set;}
     private void CambiarModoEdicion()
     {
         ModoEdicion = !ModoEdicion;
@@ -71,9 +84,13 @@
         });
         return Task.CompletedTask;
     }
-    private Task BorrarProducto()
+ 
+    private async Task RegistrarCompra()
     {
-        EliminarCafe.InvokeAsync(Id);
-        return Task.CompletedTask;
+        var user = (await _auth.GetAuthenticationStateAsync()).User;
+ 
+        var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+        _dbService.Ventas.Add(new Ventas(userId, Id, cantidadCafes, (double)PrecioCafe*cantidadCafes, DateTime.Now));
+        _dbService.SaveChanges();
     }
 }

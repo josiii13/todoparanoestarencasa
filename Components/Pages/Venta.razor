@@ -1,0 +1,30 @@
+@page  "/ventas"
+@using Microsoft.EntityFrameworkCore
+@using sharpness_sharp.Data.Models
+@using sharpness_sharp.Data
+@inject ApplicationAuthDbContext _dbService
+
+@foreach (Ventas venta in lstVentas)
+{
+    <div>
+        <p>Id de Venta: @venta.Id</p>
+        <p>Email del cliente: @venta.Cliente.UserName</p>
+        <p>Nombre del cafe: @venta.Cafe.NombreCafe</p>
+        <p>Precio del cafe: @venta.Cafe.PrecioCafe</p>
+        <p>Unidades compradas: @venta.Cantidad</p>
+        <p>Total venta: @venta.TotalVenta</p>
+        <p>Fecha venta: @venta.Fecha_Venta.ToString()</p>
+    </div>
+}
+
+@code{
+    public List<Ventas> lstVentas =new List<Ventas>();
+    protected override Task OnInitializedAsync()
+    {
+        lstVentas=_dbService.Ventas 
+        .Include(ventas=>ventas.Cliente)
+        .Include(ventas=>ventas.Cafe)
+        .ToList();
+        return base.OnInitializedAsync();
+    }
+}

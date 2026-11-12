@@ -254,6 +254,37 @@ namespace sharpness_sharp.Migrations
                     b.ToTable("Cafes");
                 });
 
+            modelBuilder.Entity("sharpness_sharp.Data.Models.Ventas", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha_Venta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Id_Cafe")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Id_Cliente")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("TotalVenta")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id_Cafe");
+
+                    b.HasIndex("Id_Cliente");
+
+                    b.ToTable("Ventas");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -354,6 +385,30 @@ namespace sharpness_sharp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("sharpness_sharp.Data.Models.Ventas", b =>
+                {
+                    b.HasOne("sharpness_sharp.Data.Models.Cafe", "Cafe")
+                        .WithMany()
+                        .HasForeignKey("Id_Cafe")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("sharpness_sharp.Data.ApplicationUser", "Cliente")
+                        .WithMany("lstVentas")
+                        .HasForeignKey("Id_Cliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cafe");
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("sharpness_sharp.Data.ApplicationUser", b =>
+                {
+                    b.Navigation("lstVentas");
                 });
 #pragma warning restore 612, 618
         }
